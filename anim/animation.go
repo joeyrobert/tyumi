@@ -2,8 +2,6 @@ package anim
 
 import (
 	"time"
-
-	"github.com/bennicholls/tyumi/log"
 )
 
 // Anything that can do animations! Animations are updated by an update function, and track duration/progress. Animations
@@ -16,6 +14,7 @@ type Animator interface {
 
 	Update(time.Duration)
 	GetDuration() time.Duration
+	SetBlocking(bool)
 	SetOneShot(bool)
 
 	IsPlaying() bool
@@ -111,7 +110,19 @@ func (a *Animation) SetOneShot(oneshot bool) {
 
 	a.OneShot = oneshot
 	if a.OneShot && a.Repeat {
-		log.Warning("Repeating animations cannot be oneshot! Removing repeat flag.")
+		a.Repeat = false
+	}
+}
+
+// Sets the blocking flag for an animation. This also sets the repeat flag to false, since a repeating blocking animation
+// would hang your game!!
+func (a *Animation) SetBlocking(blocking bool) {
+	if a.Blocking == blocking {
+		return
+	}
+
+	a.Blocking = blocking
+	if a.Blocking && a.Repeat {
 		a.Repeat = false
 	}
 }
