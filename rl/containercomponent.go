@@ -3,39 +3,10 @@ package rl
 import (
 	"github.com/bennicholls/tyumi/log"
 	"github.com/bennicholls/tyumi/rl/ecs"
-	"github.com/bennicholls/tyumi/vec"
 )
 
 func init() {
-	ecs.Register[TerrainComponent]()
 	ecs.Register[EntityContainerComponent]()
-	ecs.Register[PositionComponent]()
-	ecs.Register[EntityComponent]()
-	ecs.Register[PlayerComponent]()
-	ecs.Register[MemoryComponent]()
-}
-
-type PositionComponent struct {
-	ecs.Component
-	vec.Coord
-
-	Static bool
-}
-
-type TerrainComponent struct {
-	ecs.Component
-	TileType
-}
-
-type EntityComponent struct {
-	ecs.Component
-	EntityType
-
-	Invisible bool
-}
-
-type PlayerComponent struct {
-	ecs.Component
 }
 
 type EntityContainerComponent struct {

@@ -5,6 +5,16 @@ import (
 	"github.com/bennicholls/tyumi/rl/ecs"
 )
 
+var EV_ENTITYHEALTHCHANGED = event.Register("Entity's health changed.")
+var EV_ENTITYDIED = event.Register("Entity has been killed/destroyed.")
+
+type EntityHealthChangedEvent struct {
+	event.EventPrototype
+
+	Entity       Entity
+	OldHP, NewHP int
+}
+
 func init() {
 	ecs.Register[HealthComponent]()
 }

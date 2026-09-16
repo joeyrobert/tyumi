@@ -7,6 +7,21 @@ import (
 	"github.com/bennicholls/tyumi/vec"
 )
 
+func init() {
+	ecs.Register[TerrainComponent]()
+
+	TILE_NONE = RegisterTileType(TileData{Name: "No Tile", Desc: "A void in the universe."})
+
+	DefaultTileDrawFunction = DrawTile
+	DefaultTileEntityDrawFunction = DrawTileEntity
+
+}
+
+type TerrainComponent struct {
+	ecs.Component
+	TileType
+}
+
 type TileType uint32
 
 func (tt TileType) Data() TileData {
@@ -41,13 +56,6 @@ var DefaultTileDrawFunction func(tile Tile, viewer Entity) gfx.Visuals
 // The function Tyumi will use to draw the entity on a given tile. It returns the computed visuals as well as the Entity
 // that it drew.
 var DefaultTileEntityDrawFunction func(tile Tile, viewer Entity) (gfx.Visuals, Entity)
-
-func init() {
-	TILE_NONE = RegisterTileType(TileData{Name: "No Tile", Desc: "A void in the universe."})
-
-	DefaultTileDrawFunction = DrawTile
-	DefaultTileEntityDrawFunction = DrawTileEntity
-}
 
 type Tile ecs.Entity
 

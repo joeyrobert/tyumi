@@ -9,6 +9,22 @@ import (
 	"github.com/bennicholls/tyumi/vec"
 )
 
+func init() {
+	ecs.Register[EntityComponent]()
+	ecs.Register[PlayerComponent]()
+}
+
+type EntityComponent struct {
+	ecs.Component
+	EntityType
+
+	Invisible bool
+}
+
+type PlayerComponent struct {
+	ecs.Component
+}
+
 type EntityType uint32
 
 func (et EntityType) Data() EntityData {
@@ -116,7 +132,7 @@ func (e Entity) IsValid() bool {
 
 func (e Entity) MoveTo(pos vec.Coord) {
 	position := ecs.Get[PositionComponent](e)
-	if position.Static && pos != NOT_IN_TILEMAP {
+	if position.Coord == pos || (position.Static && pos != NOT_IN_TILEMAP) {
 		return
 	}
 

@@ -14,6 +14,19 @@ import (
 
 func init() {
 	ecs.Register[FOVComponent]()
+	ecs.Register[MemoryComponent]()
+}
+
+var (
+	EV_LOSTSIGHT   = event.Register("An entity has lost sight of another entity.")
+	EV_GAINEDSIGHT = event.Register("An entity has gained sight of another entity.")
+)
+
+type EntitySightEvent struct {
+	event.EventPrototype
+
+	Viewer        Entity
+	TrackedEntity Entity
 }
 
 // FOVComponent is for anything that can see.
@@ -146,7 +159,7 @@ func (fs *FOVSystem) immediateHandleEvents(e event.Event) (event_handled bool) {
 		visEvent := e.(*TileChangedVisibilityEvent)
 		fs.changedVisbilityTiles.Add(visEvent.Pos)
 		return true
-	// case EV_ENTITYCHANGEDVISIBILITY:
+		// case EV_ENTITYCHANGEDVISIBILITY:
 		// TODO: IMPLEMENT THIS ONCE WE NEED IT.
 		// return
 	}
