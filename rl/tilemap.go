@@ -30,10 +30,6 @@ type TileMap struct {
 	currentCameraBounds vec.Rect
 }
 
-func (tm *TileMap) getMap() *TileMap {
-	return tm
-}
-
 // Initialize the TileMap. All tiles in the map will be set to defaultTile. Be sure to call TileMap.Cleanup() before
 // getting rid of a tilemap!
 func (tm *TileMap) Init(size vec.Dims, defaultTile TileType) {

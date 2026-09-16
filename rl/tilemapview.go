@@ -76,7 +76,7 @@ func (tmv *TileMapView) ImmediateHandleEvent(e event.Event) (event_handled bool)
 func (tmv *TileMapView) SetTileMap(tilemap *TileMap) {
 	tmv.tilemap = tilemap
 	tmv.Updated = true
-	tmv.tilemap.getMap().currentCameraBounds = vec.Rect{tmv.cameraOffset, tmv.Size()}
+	tmv.tilemap.currentCameraBounds = vec.Rect{tmv.cameraOffset, tmv.Size()}
 	tmv.Clear()
 }
 
@@ -101,7 +101,7 @@ func (tmv *TileMapView) MoveCamera(dx, dy int) {
 func (tmv *TileMapView) SetCameraOffset(offset vec.Coord) {
 	tmv.cameraOffset = offset
 	if tmv.tilemap != nil {
-		tmv.tilemap.getMap().currentCameraBounds = vec.Rect{offset, tmv.Size()}
+		tmv.tilemap.currentCameraBounds = vec.Rect{offset, tmv.Size()}
 	}
 
 	tmv.ForceRedraw()
