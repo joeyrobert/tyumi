@@ -15,24 +15,39 @@ type HealthComponent struct {
 	HP Stat[int]
 }
 
+func (hc *HealthComponent) SetHealth(health int) {
+	oldHealth := hc.HP.Get()
+
+	if oldHealth == health {
+		return
+	}
+
+	hc.HP.Set(health)
+
+	if hc.HP.Get() == oldHealth {
+		return
+	}
+
+	e := Entity(hc.GetEntity())
+	event.Fire(EV_ENTITYHEALTHCHANGED, &EntityHealthChangedEvent{
+		Entity: e,
+		OldHP:  oldHealth,
+		NewHP:  hc.HP.Get(),
+	})
+
+	if hc.HP.Get() == 0 {
+		event.Fire(EV_ENTITYDIED, &EntityEvent{Entity: e})
+	}
+}
+
 func (hc *HealthComponent) ChangeHealth(delta int) {
 	if delta == 0 {
 		return
 	}
 
-	oldHealth := hc.HP.Get()
-	hc.HP.Mod(delta)
+	hc.SetHealth(hc.HP.Get() + delta)
+}
 
-	if hc.HP.Get() != oldHealth {
-		e := Entity(hc.GetEntity())
-		event.Fire(EV_ENTITYHEALTHCHANGED, &EntityHealthChangedEvent{
-			Entity: e,
-			OldHP: oldHealth,
-			NewHP: hc.HP.Get(),
-		})
-
-		if hc.HP.Get() == 0 {
-			event.Fire(EV_ENTITYDIED, &EntityEvent{Entity: e})
-		}
-	}
+func (hc HealthComponent) Dead() bool {
+	return hc.HP.Get() == 0
 }
